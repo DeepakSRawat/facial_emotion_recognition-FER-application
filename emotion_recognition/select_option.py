@@ -3,8 +3,8 @@ from click_photo import clk_phto
 #list to create multiple buttons
 values = ["1.click photo",
          "2.capture video",
-         "3.upload photo",
-         "4.upload video",
+         # "3.upload photo",
+         # "4.upload video",
          ]
 
 def option():

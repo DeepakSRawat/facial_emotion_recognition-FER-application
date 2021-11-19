@@ -47,15 +47,30 @@ def cap_v():
         return VIDEO_TYPE['avi']
 
 
-
+    face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
     cap = cv2.VideoCapture(0)
     out = cv2.VideoWriter(filename, get_video_type(filename), 25, get_dims(cap, res))
 
+    # convert to gray scale of each frames
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+        # Detects faces of different sizes in the input image
+        faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+
+        for (x,y,w,h) in faces:
+            # To draw a rectangle in a face
+            cv2.rectangle(frame,(x,y),(x+w,y+h),(255,255,0),2)
+            roi_gray = gray[y:y+h, x:x+w]
+            roi_color = frame[y:y+h, x:x+w]
+
     while True:
+        # reads frames from a camera
         ret, frame = cap.read()
         out.write(frame)
         cv2.imshow('frame',frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        if k%256 == 27:
+            # ESC pressed
+            print("Escape hit, closing...")
             break
 
 

@@ -51,7 +51,11 @@ def cap_v():
     cap = cv2.VideoCapture(0)
     out = cv2.VideoWriter(filename, get_video_type(filename), 25, get_dims(cap, res))
 
-    # convert to gray scale of each frames
+    while True:
+        # reads frames from a camera
+        ret, frame = cap.read()
+
+        # convert to gray scale of each frames
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         # Detects faces of different sizes in the input image
@@ -63,11 +67,9 @@ def cap_v():
             roi_gray = gray[y:y+h, x:x+w]
             roi_color = frame[y:y+h, x:x+w]
 
-    while True:
-        # reads frames from a camera
-        ret, frame = cap.read()
         out.write(frame)
         cv2.imshow('frame',frame)
+        k = cv2.waitKey(1) 
         if k%256 == 27:
             # ESC pressed
             print("Escape hit, closing...")
